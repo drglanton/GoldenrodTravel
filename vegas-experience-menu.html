@@ -371,9 +371,7 @@
 <div id="gate">
   <div class="gate-card">
     <p class="display">Vegas,<br><em>Your Way.</em></p>
-    <p class="sub">Oct 1&ndash;6, 2026 &middot; A menu of experiences your advisor put together for your trip. Tell us what sounds good &mdash; nothing is booked until you say so.</p>
-    <label for="name-input">What's your name?</label>
-    <input type="text" id="name-input" placeholder="e.g. Danielle" autocomplete="name">
+    <p class="sub">Oct 1&ndash;6, 2026 &middot; A menu put together for you, Yolanda. Tell us what sounds good &mdash; nothing is booked until you say so.</p>
     <button class="btn-primary" id="start-btn">See the menu</button>
   </div>
 </div>
@@ -412,6 +410,33 @@
 
 <script>
 const ITEMS = [
+  {
+    id: "hotel-park-mgm",
+    category: "Accommodations",
+    title: "Park MGM \u2014 King Room",
+    desc: "The only fully non-smoking casino resort on the Strip &mdash; quieter and easier to navigate than the mega-resorts, with a tram to Aria and Bellagio. Home to Eataly, Primrose, and Bavette's. 4.6 stars across 114 client reviews; advisors consistently call it the best value-to-location ratio on this list.",
+    price: "$268/night \u2014 $1,774 total (5 nights)",
+    est: false,
+    link: "https://mgmresorts.com/en/hotels/park-mgm.html"
+  },
+  {
+    id: "hotel-linq",
+    category: "Accommodations",
+    title: "The LINQ Hotel & Casino \u2014 King Room",
+    desc: "Dead-center Strip location attached to the High Roller wheel and LINQ Promenade &mdash; the most budget-friendly of the three. Self-service check-in kiosks. 4.4 stars across 44 client reviews; a few flag small rooms and a resort fee that ran higher than expected, worth confirming upfront.",
+    price: "$216/night \u2014 $1,510 total (5 nights)",
+    est: false,
+    link: "https://www.caesars.com/linq"
+  },
+  {
+    id: "hotel-caesars",
+    category: "Accommodations",
+    title: "Caesars Palace \u2014 King Room (Octavius Tower, Pool View)",
+    desc: "The most iconic address on this list &mdash; Roman-themed mega-resort dead center on the Strip, next to Bellagio, with the Forum Shops and Qua Spa on-site. 4.6 stars across 34 client reviews. The priciest of the three; a few advisors note older rooms in the Julius tower run dated, so this quote is for the newer Octavius tower.",
+    price: "$367.70/night \u2014 $2,707.49 total (5 nights)",
+    est: false,
+    link: "https://www.caesars.com/caesars-palace"
+  },
   {
     id: "walking-secret",
     category: "See the Strip",
@@ -640,6 +665,7 @@ const ITEMS = [
 ];
 
 const CATEGORY_NOTES = {
+  "Accommodations": "King room rates for Oct 1&ndash;6 (5 nights, 2 adults). Pick whichever fits your style \u2014 your advisor will confirm final availability.",
   "See the Strip": "Daytime ways to get your bearings and see the Strip up close.",
   "Daytime & Views": "Attractions worth an afternoon &mdash; confirmed current pricing.",
   "After Dark": "For after the sun goes down.",
@@ -650,7 +676,7 @@ const CATEGORY_NOTES = {
 };
 
 let selections = {};
-let clientName = "";
+let clientName = "Yolanda Eppinger";
 
 function renderItems() {
   const container = document.getElementById('items-container');
@@ -676,7 +702,7 @@ function renderItem(item) {
       </div>
       <p class="item-desc">${item.desc}</p>
       <div class="item-bottom">
-        <a class="item-link" href="${item.link}" target="_blank" rel="noopener">View details</a>
+        ${item.link ? `<a class="item-link" href="${item.link}" target="_blank" rel="noopener">View details</a>` : '<span></span>'}
         <div class="choice-group">
           <button class="choice-btn yes" data-id="${item.id}" data-choice="yes">Interested</button>
           <button class="choice-btn no" data-id="${item.id}" data-choice="no">Not for Me</button>
@@ -712,23 +738,11 @@ function updateSubmitBar() {
 }
 
 document.getElementById('start-btn').addEventListener('click', () => {
-  const input = document.getElementById('name-input');
-  const name = input.value.trim();
-  if (!name) {
-    input.focus();
-    input.style.borderColor = 'var(--magenta)';
-    return;
-  }
-  clientName = name;
   document.getElementById('gate').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('submit-bar').style.display = 'flex';
   renderItems();
   attachHandlers();
-});
-
-document.getElementById('name-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') document.getElementById('start-btn').click();
 });
 
 document.getElementById('submit-btn').addEventListener('click', async () => {
